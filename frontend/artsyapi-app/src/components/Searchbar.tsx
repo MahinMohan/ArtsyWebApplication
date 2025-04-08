@@ -22,6 +22,12 @@ function Searchbar({
   const [searchload, setsearchload] = useState(false);
   const [searched, setSearched] = useState(false);
 
+  const params = useParams();
+
+  const [artistIdFromUrl, setArtistIdFromUrl] = useState(
+    params.id || sessionStorage.getItem("artist_id")
+  );
+
   // Use URL param if available; otherwise, if an artist id is stored in session, use that.
   const id = useParams().id || sessionStorage.getItem("artist_id");
 
@@ -110,7 +116,7 @@ function Searchbar({
         artistdata={artistdata}
         isLoggedIn={isLoggedIn}
         loggedinuser={loggedinuser}
-        artistid={id}
+        artistid={artistIdFromUrl}
         setFavourites={setFavourites}
         handlenotification={handlenotification}
         showCards={searched} // Cards UI will be hidden unless a search has been performed

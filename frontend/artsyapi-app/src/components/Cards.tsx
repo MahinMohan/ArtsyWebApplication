@@ -23,6 +23,8 @@ const Cards = ({
   const [isLoadingArtistInfo, setIsLoadingArtistInfo] = useState(false);
   const [isLoadingArtworks, setIsLoadingArtworks] = useState(false);
 
+  // console.log(artistinfo);
+
   useEffect(() => {
     if (!artistid) return;
 
@@ -54,6 +56,7 @@ const Cards = ({
   }, [artistid]);
 
   const handleCardClick = async (artist) => {
+    console.log("HIIIII");
     setselectedartist(artist);
     console.log(artist);
     if (!artist) return;
@@ -62,16 +65,17 @@ const Cards = ({
     sessionStorage.setItem("artist_id", id);
     setIsLoadingArtistInfo(true);
     setIsLoadingArtworks(true);
-
+    console.log(id);
     try {
-      const response1 = await fetch(`api/artistdata?id=${id}`);
+      const response1 = await fetch(`/api/artistdata?id=${id}`);
+      console.log(response1);
       if (!response1.ok) throw new Error("Failed to fetch artist info");
       const data = await response1.json();
       console.log(data);
       setartistinfo(data);
       setIsLoadingArtistInfo(false);
 
-      const response2 = await fetch(`api/artworksdata?id=${id}`);
+      const response2 = await fetch(`/api/artworksdata?id=${id}`);
       if (!response2.ok) throw new Error("Failed to fetch artworks");
       const data2 = await response2.json();
       setArtworks(data2 || { _embedded: { artworks: [] } });
@@ -86,7 +90,7 @@ const Cards = ({
 
   const addToFavourites = async (artist) => {
     const id = artist._links?.self?.href.split("/").pop();
-    const response1 = await fetch(`api/artistdata?id=${id}`);
+    const response1 = await fetch(`/api/artistdata?id=${id}`);
     if (!response1.ok) throw new Error("Failed to fetch artist info");
     const artistdata1 = await response1.json();
 
@@ -101,7 +105,7 @@ const Cards = ({
       };
 
       setartistdatatoinfo(artistdata);
-      const res = await fetch("api/addtofavourites", {
+      const res = await fetch("/api/addtofavourites", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -119,7 +123,7 @@ const Cards = ({
   const deleteFromFavourites = async (artist) => {
     try {
       const artistId = artist._links?.self?.href.split("/").pop();
-      const res = await fetch("api/deletefavourites", {
+      const res = await fetch("/api/deletefavourites", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
