@@ -1,0 +1,124 @@
+import {
+  Form,
+  Button,
+  InputGroup,
+  Container,
+  Spinner,
+  Alert,
+} from "react-bootstrap";
+import Cards from "./Cards";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+
+function Searchbar({
+  isLoggedIn,
+  loggedinuser,
+  setFavourites,
+  handlenotification,
+}) {
+  const [searchinput, setsearchinput] = useState("");
+  const [artistdata, setartistdata] = useState([]);
+  const [searchload, setsearchload] = useState(false);
+  const [searched, setSearched] = useState(false);
+
+  const id = useParams().id || sessionStorage.getItem("artist_id");
+
+  const handleforminput = (e) => {
+    setsearchinput(e.target.value);
+  };
+
+  const handlesearch = async () => {
+    if (!searchinput.trim()) {
+      console.log("Empty input");
+      return;
+    }
+
+    try {
+      setsearchload(true);
+      setSearched(true); // <-- NEW: Mark that we have done a search
+      const response = await fetch(
+        `http://localhost:3000/searchdata?q=${searchinput}`
+      );
+
+      if (!response.ok) {
+        console.log("Failed to receive data");
+        setsearchload(false);
+        return;
+      }
+
+      const data = await response.json();
+      console.log("Data received=", data);
+      setartistdata(data);
+    } catch (error) {
+      console.log("Backend server error", error);
+    } finally {
+      setsearchload(false);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handlesearch();
+    }
+  };
+
+  const handleClear = () => {
+    setsearchinput("");
+    setartistdata([]);
+    setSearched(false);
+  };
+
+  return (
+    <>
+      <Container className="d-flex justify-content-center mt-5">
+        <InputGroup style={{ maxWidth: "900px" }}>
+          <Form.Control
+            placeholder="Please enter an artist name."
+            onChange={handleforminput}
+            onKeyDown={handleKeyPress}
+            value={searchinput}
+          />
+          <Button
+            variant="primary"
+            onClick={handlesearch}
+            disabled={!searchinput.trim()}
+          >
+            Search
+            {searchload ? (
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+            ) : null}
+          </Button>
+          <Button variant="secondary" onClick={handleClear}>
+            Clear
+          </Button>
+        </InputGroup>
+      </Container>
+
+      {searched && !searchload && artistdata.length === 0 && (
+        <Container className="mt-3" style={{ maxWidth: "900px" }}>
+          <Alert variant="danger">No results.</Alert>
+        </Container>
+      )}
+
+      {artistdata.length > 0 && (
+        <Cards
+          artistdata={artistdata}
+          isLoggedIn={isLoggedIn}
+          loggedinuser={loggedinuser}
+          artistid={id}
+          setFavourites={setFavourites}
+          handlenotification={handlenotification}
+        />
+      )}
+    </>
+  );
+}
+
+export default Searchbar;
