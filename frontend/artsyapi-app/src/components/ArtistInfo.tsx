@@ -11,7 +11,7 @@ function ArtistInfo({
   setFavourites,
   handlenotification,
 }) {
-  // console.log(clickedartist);
+  console.log(clickedartist);
   const artistId = clickedartist?._links?.self?.href.split("/").pop();
 
   const isFavorited = favourites?.some((fav) => fav.artistId === artistId);

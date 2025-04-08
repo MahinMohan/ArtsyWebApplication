@@ -52,6 +52,7 @@ function TopNavBar(props) {
         console.log(data);
         props.onlogin(false);
         window.location.href = "/search";
+        sessionStorage.removeItem("artist_id");
       } else {
         console.log("Problem with log out");
       }

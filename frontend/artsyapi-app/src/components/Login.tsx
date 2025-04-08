@@ -60,6 +60,7 @@ function Login({ onLogin, onData, setloggedinuser }) {
           onLogin(true);
           navigate("/search");
           onData(name, gravatar);
+          sessionStorage.removeItem("artist_id");
         } else {
           console.log("Login unsuccessful");
         }

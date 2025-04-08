@@ -22,6 +22,7 @@ function Searchbar({
   const [searchload, setsearchload] = useState(false);
   const [searched, setSearched] = useState(false);
 
+  // Use URL param if available; otherwise, if an artist id is stored in session, use that.
   const id = useParams().id || sessionStorage.getItem("artist_id");
 
   const handleforminput = (e) => {
@@ -33,20 +34,17 @@ function Searchbar({
       console.log("Empty input");
       return;
     }
-
     try {
       setsearchload(true);
-      setSearched(true); // <-- NEW: Mark that we have done a search
+      setSearched(true); // Mark that a search has been performed
       const response = await fetch(
         `http://localhost:3000/searchdata?q=${searchinput}`
       );
-
       if (!response.ok) {
         console.log("Failed to receive data");
         setsearchload(false);
         return;
       }
-
       const data = await response.json();
       console.log("Data received=", data);
       setartistdata(data);
@@ -107,16 +105,16 @@ function Searchbar({
         </Container>
       )}
 
-      {artistdata.length > 0 && (
-        <Cards
-          artistdata={artistdata}
-          isLoggedIn={isLoggedIn}
-          loggedinuser={loggedinuser}
-          artistid={id}
-          setFavourites={setFavourites}
-          handlenotification={handlenotification}
-        />
-      )}
+      {/* Always render Cards but pass showCards prop to conditionally display its UI */}
+      <Cards
+        artistdata={artistdata}
+        isLoggedIn={isLoggedIn}
+        loggedinuser={loggedinuser}
+        artistid={id}
+        setFavourites={setFavourites}
+        handlenotification={handlenotification}
+        showCards={searched} // Cards UI will be hidden unless a search has been performed
+      />
     </>
   );
 }

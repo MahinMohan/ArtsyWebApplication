@@ -68,6 +68,7 @@ function Register({ onLogin, onData, setloggedinuser }) {
         onLogin(true);
         onData(name, gravatar);
         navigate("/search");
+        sessionStorage.removeItem("artist_id");
       } else {
         console.log("Registration failed try again");
       }
