@@ -15,6 +15,7 @@ const Cards = ({
   showCards,
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [selectedCardIndex, setSelectedCardIndex] = useState(null);
   const [artworks, setArtworks] = useState({ _embedded: { artworks: [] } });
   const [artistinfo, setartistinfo] = useState(null);
   const [selectedartist, setselectedartist] = useState(null);
@@ -22,8 +23,6 @@ const Cards = ({
   const [artistdattoinfo, setartistdatatoinfo] = useState({});
   const [isLoadingArtistInfo, setIsLoadingArtistInfo] = useState(false);
   const [isLoadingArtworks, setIsLoadingArtworks] = useState(false);
-
-  // console.log(artistinfo);
 
   useEffect(() => {
     if (!artistid) return;
@@ -56,7 +55,6 @@ const Cards = ({
   }, [artistid]);
 
   const handleCardClick = async (artist) => {
-    console.log("HIIIII");
     setselectedartist(artist);
     console.log(artist);
     if (!artist) return;
@@ -166,7 +164,6 @@ const Cards = ({
 
   return (
     <>
-      {/* Render Cards only if showCards is true */}
       {showCards && (
         <Container className="mt-4">
           <div
@@ -198,7 +195,10 @@ const Cards = ({
                   }}
                   onMouseEnter={() => setHoveredIndex(index)}
                   onMouseLeave={() => setHoveredIndex(null)}
-                  onClick={() => handleCardClick(artist)}
+                  onClick={() => {
+                    handleCardClick(artist);
+                    setSelectedCardIndex(index);
+                  }}
                 >
                   {isLoggedIn && (
                     <Button
@@ -241,7 +241,9 @@ const Cards = ({
                   <Card.Body
                     style={{
                       backgroundColor:
-                        hoveredIndex === index ? "#17479E" : "#112B3C",
+                        selectedCardIndex === index || hoveredIndex === index
+                          ? "#17479E"
+                          : "#112B3C",
                       padding: "10px",
                     }}
                   >
@@ -254,28 +256,39 @@ const Cards = ({
         </Container>
       )}
 
-      {/* Artist info and tabs always rendered if artistinfo is available */}
       {artistinfo && (
         <Container className="mt-4 pb-5">
           <Row className="justify-content-center">
-            <Col md={10} lg={9} xl={8} className="d-flex p-0">
+            <Col
+              md={10}
+              lg={10}
+              xl={9}
+              className="d-flex p-0"
+              style={{
+                border: "none",
+                borderRadius: "5px",
+                overflow: "hidden",
+              }}
+            >
               <Button
-                className="flex-fill border rounded-0"
+                className="flex-fill  rounded-0"
                 onClick={() => setActiveTab("info")}
                 style={{
                   backgroundColor: activeTab === "info" ? "#17479E" : "#FFFFFF",
                   color: activeTab === "info" ? "#FFFFFF" : "#17479E",
+                  border: "none",
                 }}
               >
                 Artist Info
               </Button>
               <Button
-                className="flex-fill border rounded-0"
+                className="flex-fill  rounded-0"
                 onClick={() => setActiveTab("artworks")}
                 style={{
                   backgroundColor:
                     activeTab === "artworks" ? "#17479E" : "#FFFFFF",
                   color: activeTab === "artworks" ? "#FFFFFF" : "#17479E",
+                  border: "none",
                 }}
               >
                 Artworks

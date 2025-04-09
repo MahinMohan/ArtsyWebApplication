@@ -71,12 +71,13 @@ function Searchbar({
     setsearchinput("");
     setartistdata([]);
     setSearched(false);
+    sessionStorage.removeItem("artist_id");
   };
 
   return (
     <>
       <Container className="d-flex justify-content-center mt-5">
-        <InputGroup style={{ maxWidth: "900px" }}>
+        <InputGroup style={{ maxWidth: "950px" }}>
           <Form.Control
             placeholder="Please enter an artist name."
             onChange={handleforminput}
@@ -106,8 +107,17 @@ function Searchbar({
       </Container>
 
       {searched && !searchload && artistdata.length === 0 && (
-        <Container className="mt-3" style={{ maxWidth: "900px" }}>
-          <Alert variant="danger">No results.</Alert>
+        <Container className="mt-3" style={{ maxWidth: "950px" }}>
+          <Alert
+            variant="danger"
+            className="text-start"
+            style={{
+              padding: "0.5rem 1rem", // adjust for desired tightness
+              marginBottom: "0.5rem", // reduce vertical gap below alert
+            }}
+          >
+            No results.
+          </Alert>
         </Container>
       )}
 

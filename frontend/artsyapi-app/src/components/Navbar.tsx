@@ -70,13 +70,28 @@ function TopNavBar(props) {
         <Nav className="ms-auto">
           {props.isLoggedIn ? (
             <>
-              <Nav.Link as={Link} to="/search" className={linkClass("/search")}>
+              {/* <Nav.Link as={Link} to="/search" className={linkClass("/search")}> */}
+              <Nav.Link
+                as={Link}
+                to="/search"
+                className={`ms-3 px-3 py-2 rounded ${
+                  isActive("/search") ? "text-white" : "text-dark"
+                }`}
+                style={
+                  isActive("/search") ? { backgroundColor: "#17479E" } : {}
+                }
+              >
                 Search
               </Nav.Link>
               <Nav.Link
                 as={Link}
                 to="/favourites"
-                className={linkClass("/favourites")}
+                className={`ms-3 px-3 py-2 rounded ${
+                  isActive("/favourites") ? "text-white" : "text-dark"
+                }`}
+                style={
+                  isActive("/favourites") ? { backgroundColor: "#17479E" } : {}
+                }
               >
                 Favourites
               </Nav.Link>
@@ -109,16 +124,37 @@ function TopNavBar(props) {
             </>
           ) : (
             <>
-              <Nav.Link as={Link} to="/search" className={linkClass("/search")}>
+              <Nav.Link
+                as={Link}
+                to="/search"
+                className={`ms-3 px-3 py-2 rounded ${
+                  isActive("/search") ? "text-white" : "text-dark"
+                }`}
+                style={
+                  isActive("/search") ? { backgroundColor: "#17479E" } : {}
+                }
+              >
                 Search
               </Nav.Link>
-              <Nav.Link as={Link} to="/login" className={linkClass("/login")}>
+              <Nav.Link
+                as={Link}
+                to="/login"
+                className={`ms-3 px-3 py-2 rounded ${
+                  isActive("/login") ? "text-white" : "text-dark"
+                }`}
+                style={isActive("/login") ? { backgroundColor: "#17479E" } : {}}
+              >
                 Log in
               </Nav.Link>
               <Nav.Link
                 as={Link}
                 to="/register"
-                className={linkClass("/register")}
+                className={`ms-3 px-3 py-2 rounded ${
+                  isActive("/register") ? "text-white" : "text-dark"
+                }`}
+                style={
+                  isActive("/register") ? { backgroundColor: "#17479E" } : {}
+                }
               >
                 Register
               </Nav.Link>
