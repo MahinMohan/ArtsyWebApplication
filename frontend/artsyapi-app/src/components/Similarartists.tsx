@@ -12,6 +12,7 @@ function Similarartists({
 }) {
   const [similarartists, setsimilarartists] = useState([]);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [selectedCardIndex, setSelectedCardIndex] = useState(null);
 
   useEffect(() => {
     if (!selectedartist) return;
@@ -124,7 +125,10 @@ function Similarartists({
               }}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
-              onClick={() => onSimilarArtistClick(artist)}
+              onClick={() => {
+                onSimilarArtistClick(artist);
+                setSelectedCardIndex(index);
+              }}
             >
               <Button
                 variant="link"
@@ -166,7 +170,7 @@ function Similarartists({
                 className="card-body"
                 style={{
                   backgroundColor:
-                    hoveredIndex === index ? "#0E5692" : "#112B3C",
+                    hoveredIndex === index ? "#17479E" : "#112B3C",
                   padding: "10px",
                   height: "40px",
                 }}

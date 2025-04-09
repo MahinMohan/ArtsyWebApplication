@@ -94,14 +94,14 @@ function Favourites(props) {
   return (
     <Container
       className="mt-4 pb-5"
-      style={{ maxWidth: "1000px", margin: "0 auto" }}
+      style={{ maxWidth: "1100px", margin: "0 auto" }}
     >
       <Row className="g-5">
         {props.Favourites.map((fav, idx) => (
           <Col key={idx} md={6} lg={4} xl={4}>
             <Card
               className="text-white shadow-sm border-0 bg-dark position-relative"
-              style={{ height: "200px", cursor: "pointer", width: "20rem" }}
+              style={{ height: "180px", cursor: "pointer", width: "22rem" }}
               onClick={() => {
                 openartistcard(fav.artistId);
               }}

@@ -15,7 +15,7 @@ const Cards = ({
   showCards,
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [selectedCardIndex, setSelectedCardIndex] = useState(null);
+  const [SelectedclickedArtistId, setSelectedclickedArtistId] = useState(null);
   const [artworks, setArtworks] = useState({ _embedded: { artworks: [] } });
   const [artistinfo, setartistinfo] = useState(null);
   const [selectedartist, setselectedartist] = useState(null);
@@ -23,6 +23,9 @@ const Cards = ({
   const [artistdattoinfo, setartistdatatoinfo] = useState({});
   const [isLoadingArtistInfo, setIsLoadingArtistInfo] = useState(false);
   const [isLoadingArtworks, setIsLoadingArtworks] = useState(false);
+
+  // 1) Determine mobile or desktop
+  const isMobile = window.innerWidth < 992;
 
   useEffect(() => {
     if (!artistid) return;
@@ -56,20 +59,17 @@ const Cards = ({
 
   const handleCardClick = async (artist) => {
     setselectedartist(artist);
-    console.log(artist);
     if (!artist) return;
 
     const id = artist._links.self.href.split("/").pop();
     sessionStorage.setItem("artist_id", id);
     setIsLoadingArtistInfo(true);
     setIsLoadingArtworks(true);
-    console.log(id);
+
     try {
       const response1 = await fetch(`/api/artistdata?id=${id}`);
-      console.log(response1);
       if (!response1.ok) throw new Error("Failed to fetch artist info");
       const data = await response1.json();
-      console.log(data);
       setartistinfo(data);
       setIsLoadingArtistInfo(false);
 
@@ -162,18 +162,46 @@ const Cards = ({
     }
   };
 
+  // 2) Conditionally style the cards container
+  const cardContainerStyle = isMobile
+    ? {
+        whiteSpace: "nowrap",
+        width: "100%",
+        margin: "0 auto",
+        paddingTop: "0",
+        paddingLeft: "1rem",
+        paddingRight: "1rem",
+        direction: "ltr",
+        overflowX: "auto",
+      }
+    : {
+        whiteSpace: "nowrap",
+        width: "950px",
+        margin: "0 auto",
+        paddingTop: "0",
+      };
+
+  // 3) Conditionally style the tabs area
+  const tabsColStyle = isMobile
+    ? {
+        border: "none",
+        borderRadius: "10px",
+
+        width: "calc(100% - 2rem)", // subtracts 2rem from full width, creating side gaps
+        margin: "0 auto", // centers the container
+      }
+    : {
+        border: "none",
+        borderRadius: "10px",
+      };
+
   return (
     <>
       {showCards && (
         <Container className="mt-4">
           <div
             className="d-flex gap-1 overflow-auto py-3 px-2"
-            style={{
-              whiteSpace: "nowrap",
-              width: "950px",
-              margin: "0 auto",
-              paddingTop: "0",
-            }}
+            style={cardContainerStyle}
           >
             {artistdata.map((artist, index) => {
               const artistId = artist._links?.self?.href.split("/").pop();
@@ -197,7 +225,8 @@ const Cards = ({
                   onMouseLeave={() => setHoveredIndex(null)}
                   onClick={() => {
                     handleCardClick(artist);
-                    setSelectedCardIndex(index);
+                    const artistId = artist._links.self.href.split("/").pop();
+                    setSelectedclickedArtistId(artistId);
                   }}
                 >
                   {isLoggedIn && (
@@ -241,7 +270,8 @@ const Cards = ({
                   <Card.Body
                     style={{
                       backgroundColor:
-                        selectedCardIndex === index || hoveredIndex === index
+                        hoveredIndex === index ||
+                        SelectedclickedArtistId === artistId
                           ? "#17479E"
                           : "#112B3C",
                       padding: "10px",
@@ -259,19 +289,9 @@ const Cards = ({
       {artistinfo && (
         <Container className="mt-4 pb-5">
           <Row className="justify-content-center">
-            <Col
-              md={10}
-              lg={10}
-              xl={9}
-              className="d-flex p-0"
-              style={{
-                border: "none",
-                borderRadius: "5px",
-                overflow: "hidden",
-              }}
-            >
+            <Col md={10} lg={10} xl={9} className="d-flex" style={tabsColStyle}>
               <Button
-                className="flex-fill  rounded-0"
+                className="flex-fill "
                 onClick={() => setActiveTab("info")}
                 style={{
                   backgroundColor: activeTab === "info" ? "#17479E" : "#FFFFFF",
@@ -282,7 +302,7 @@ const Cards = ({
                 Artist Info
               </Button>
               <Button
-                className="flex-fill  rounded-0"
+                className="flex-fill "
                 onClick={() => setActiveTab("artworks")}
                 style={{
                   backgroundColor:

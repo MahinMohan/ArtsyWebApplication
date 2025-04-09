@@ -36,6 +36,7 @@ function Searchbar({
   };
 
   const handlesearch = async () => {
+    sessionStorage.removeItem("artist_id");
     if (!searchinput.trim()) {
       console.log("Empty input");
       return;
@@ -64,6 +65,7 @@ function Searchbar({
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handlesearch();
+      sessionStorage.removeItem("artist_id");
     }
   };
 
