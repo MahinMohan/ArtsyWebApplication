@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+import { Star, StarFill } from "react-bootstrap-icons";
 
 function Similarartists({
   selectedartist,
@@ -144,27 +145,9 @@ function Similarartists({
                 }}
               >
                 {isFavorited ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="#FFD700"
-                  >
-                    <path d="M8 0.95l2.16 4.38 4.84.7-3.5 3.41.83 4.83L8 11.95l-4.33 2.3.83-4.83-3.5-3.41 4.84-.7L8 0.95z" />
-                  </svg>
+                  <StarFill color="#FFD700" size={16} />
                 ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="1.5"
-                  >
-                    <path d="M8 0.95l2.16 4.38 4.84.7-3.5 3.41.83 4.83L8 11.95l-4.33 2.3.83-4.83-3.5-3.41 4.84-.7L8 0.95z" />
-                  </svg>
+                  <Star color="#FFF" size={16} />
                 )}
               </Button>
 
