@@ -7,6 +7,7 @@ function TopNavBar(props) {
   const location = useLocation();
   const navigate = useNavigate();
   const isActive = (path) => location.pathname === path;
+  const isMobile = window.innerWidth < 992;
 
   const linkClass = (path) =>
     `ms-3 px-3 py-2 rounded ${
@@ -73,15 +74,18 @@ function TopNavBar(props) {
           Artist Search
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="topnav-collapse" />
-        <Navbar.Collapse id="topnav-collapse">
-          <Nav className="ms-auto">
+        <Navbar.Collapse
+          id="topnav-collapse"
+          className="justify-content-center justify-content-lg-end"
+        >
+          <Nav>
             {props.isLoggedIn ? (
               <>
                 {/* <Nav.Link as={Link} to="/search" className={linkClass("/search")}> */}
                 <Nav.Link
                   as={Link}
                   to="/search"
-                  className={`ms-3 px-3 py-2 rounded ${
+                  className={` px-3 py-2 rounded ${
                     isActive("/search") ? "text-white" : "text-dark"
                   }`}
                   style={
@@ -93,7 +97,7 @@ function TopNavBar(props) {
                 <Nav.Link
                   as={Link}
                   to="/favourites"
-                  className={`ms-3 px-3 py-2 rounded ${
+                  className={` px-3 py-2 rounded ${
                     isActive("/favourites") ? "text-white" : "text-dark"
                   }`}
                   style={
@@ -104,7 +108,7 @@ function TopNavBar(props) {
                 >
                   Favourites
                 </Nav.Link>
-                <Dropdown>
+                <Dropdown className="mx-auto mx-lg-0">
                   <Dropdown.Toggle
                     variant="link"
                     id="dropdown-basic"
@@ -119,8 +123,20 @@ function TopNavBar(props) {
                     />
                     {props.name}
                   </Dropdown.Toggle>
-
-                  <Dropdown.Menu align="end">
+                  <Dropdown.Menu
+                    align={isMobile ? "start" : "end"}
+                    className={isMobile ? "position-absolute" : ""}
+                    style={
+                      isMobile
+                        ? {
+                            top: "calc(100% + 4px)",
+                            left: 0,
+                            zIndex: 9999,
+                            transform: "translateX(-70%)",
+                          }
+                        : {}
+                    }
+                  >
                     <Dropdown.Item
                       className="text-danger"
                       onClick={handledeleteaccount}
@@ -138,7 +154,7 @@ function TopNavBar(props) {
                 <Nav.Link
                   as={Link}
                   to="/search"
-                  className={`ms-3 px-3 py-2 rounded ${
+                  className={` px-3 py-2 rounded ${
                     isActive("/search") ? "text-white" : "text-dark"
                   }`}
                   style={
@@ -150,7 +166,7 @@ function TopNavBar(props) {
                 <Nav.Link
                   as={Link}
                   to="/login"
-                  className={`ms-3 px-3 py-2 rounded ${
+                  className={` px-3 py-2 rounded ${
                     isActive("/login") ? "text-white" : "text-dark"
                   }`}
                   style={
@@ -162,7 +178,7 @@ function TopNavBar(props) {
                 <Nav.Link
                   as={Link}
                   to="/register"
-                  className={`ms-3 px-3 py-2 rounded ${
+                  className={` px-3 py-2 rounded ${
                     isActive("/register") ? "text-white" : "text-dark"
                   }`}
                   style={
