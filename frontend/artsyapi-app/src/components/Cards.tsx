@@ -321,6 +321,7 @@ const Cards = ({
           favourites={loggedinuser?.favourites}
           setFavourites={setFavourites}
           handlenotification={handlenotification}
+          onSimilarArtistClick={handleCardClick}
         />
       )}
     </>
