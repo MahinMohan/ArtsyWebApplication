@@ -13,11 +13,13 @@ const Cards = ({
   setFavourites,
   handlenotification,
   showCards,
+  artistinfo,
+  setartistinfo,
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [SelectedclickedArtistId, setSelectedclickedArtistId] = useState(null);
   const [artworks, setArtworks] = useState({ _embedded: { artworks: [] } });
-  const [artistinfo, setartistinfo] = useState(null);
+  // const [artistinfo, setartistinfo] = useState(null);
   const [selectedartist, setselectedartist] = useState(null);
   const [activeTab, setActiveTab] = useState("info");
   const [artistdattoinfo, setartistdatatoinfo] = useState({});
@@ -162,7 +164,6 @@ const Cards = ({
     }
   };
 
-  // 2) Conditionally style the cards container
   const cardContainerStyle = isMobile
     ? {
         whiteSpace: "nowrap",
@@ -181,7 +182,6 @@ const Cards = ({
         paddingTop: "0",
       };
 
-  // 3) Conditionally style the tabs area
   const tabsColStyle = isMobile
     ? {
         border: "none",
@@ -315,22 +315,25 @@ const Cards = ({
               </Button>
             </Col>
           </Row>
-
-          {activeTab === "info" && (
-            <ArtistInfo
-              clickedartist={artistinfo}
-              loginstate={isLoggedIn}
-              loggedinuser={loggedinuser}
-              artistdata={artistdattoinfo}
-              isLoading={isLoadingArtistInfo}
-              favourites={loggedinuser?.favourites}
-              setFavourites={setFavourites}
-              handlenotification={handlenotification}
-            />
-          )}
-          {activeTab === "artworks" && (
-            <Artworks artworks={artworks} isLoading={isLoadingArtworks} />
-          )}
+          {artistinfo ? (
+            <>
+              {activeTab === "info" && (
+                <ArtistInfo
+                  clickedartist={artistinfo}
+                  loginstate={isLoggedIn}
+                  loggedinuser={loggedinuser}
+                  artistdata={artistdattoinfo}
+                  isLoading={isLoadingArtistInfo}
+                  favourites={loggedinuser?.favourites}
+                  setFavourites={setFavourites}
+                  handlenotification={handlenotification}
+                />
+              )}
+              {activeTab === "artworks" && (
+                <Artworks artworks={artworks} isLoading={isLoadingArtworks} />
+              )}
+            </>
+          ) : null}
         </Container>
       )}
 

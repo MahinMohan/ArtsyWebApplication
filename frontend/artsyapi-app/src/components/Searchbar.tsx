@@ -21,6 +21,7 @@ function Searchbar({
   const [artistdata, setartistdata] = useState([]);
   const [searchload, setsearchload] = useState(false);
   const [searched, setSearched] = useState(false);
+  const [artistinfo, setartistinfo] = useState(null);
 
   const params = useParams();
 
@@ -74,6 +75,7 @@ function Searchbar({
     setartistdata([]);
     setSearched(false);
     sessionStorage.removeItem("artist_id");
+    setartistinfo(null);
   };
 
   return (
@@ -132,6 +134,8 @@ function Searchbar({
         setFavourites={setFavourites}
         handlenotification={handlenotification}
         showCards={searched} // Cards UI will be hidden unless a search has been performed
+        artistinfo={artistinfo}
+        setartistinfo={setartistinfo}
       />
     </>
   );
