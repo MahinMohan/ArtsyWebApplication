@@ -17,6 +17,7 @@ const FooterBar = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        zIndex: 999,
       }}
     >
       <Container className="justify-content-center">
