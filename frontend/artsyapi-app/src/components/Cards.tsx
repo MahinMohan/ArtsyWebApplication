@@ -42,6 +42,7 @@ const Cards = ({
         const data = await response1.json();
         setartistinfo(data);
         setIsLoadingArtistInfo(false);
+        setselectedartist(data);
 
         const response2 = await fetch(`/api/artworksdata?id=${artistid}`);
         if (!response2.ok) throw new Error("Failed to fetch artworks");
@@ -337,7 +338,7 @@ const Cards = ({
         </Container>
       )}
 
-      {isLoggedIn && (
+      {isLoggedIn && artistinfo ? (
         <Similarartists
           selectedartist={selectedartist}
           loggedinuser={loggedinuser}
@@ -346,7 +347,7 @@ const Cards = ({
           handlenotification={handlenotification}
           onSimilarArtistClick={handleCardClick}
         />
-      )}
+      ) : null}
     </>
   );
 };

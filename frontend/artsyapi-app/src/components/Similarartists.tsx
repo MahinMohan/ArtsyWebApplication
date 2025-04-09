@@ -14,6 +14,8 @@ function Similarartists({
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [selectedCardIndex, setSelectedCardIndex] = useState(null);
 
+  // console.log(selectedartist);
+
   useEffect(() => {
     if (!selectedartist) return;
 
@@ -21,10 +23,11 @@ function Similarartists({
 
     const fetchsimilarartists = async () => {
       try {
-        const response = await fetch(`api/similarartists?id=${id}`);
+        const response = await fetch(`/api/similarartists?id=${id}`);
         if (!response.ok) throw new Error("Failed to fetch artist info");
 
         const data = await response.json();
+        console.log(data);
         const artists = data._embedded?.artists || [];
         setsimilarartists(artists);
       } catch (error) {
@@ -49,7 +52,7 @@ function Similarartists({
           message: "Removed from favourites",
           variant: "danger",
         });
-        const res = await fetch("api/deletefavourites", {
+        const res = await fetch("/api/deletefavourites", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ id: artistId }),
@@ -73,7 +76,7 @@ function Similarartists({
           variant: "success",
         });
 
-        const res = await fetch("api/addtofavourites", {
+        const res = await fetch("/api/addtofavourites", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(artistdata),
