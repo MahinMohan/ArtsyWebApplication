@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Row,
@@ -10,13 +10,33 @@ import {
   Modal,
 } from "react-bootstrap";
 
-const Artworks = ({ artworks, isLoading }) => {
-  const [modaldata, setModalData] = useState(null);
+const Artworks = ({ artworks, isLoading }: any) => {
+  const [modaldata, setModalData] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
-  const [selectedArtwork, setSelectedArtwork] = useState(null);
+  const [selectedArtwork, setSelectedArtwork] = useState<any>(null);
   const [loadingModal, setLoadingModal] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 576);
 
-  const handleShowModal = async (artwork) => {
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 576);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Inline style for gene cards based on mobile status
+  const geneCardStyle = {
+    width: isMobile ? "370px" : "250px",
+    height: isMobile ? "320px" : "280px",
+    borderRadius: "5px",
+    display: "flex",
+    flexDirection: "column" as const,
+    justifyContent: "space-between",
+    textAlign: "center" as const,
+  };
+
+  const handleShowModal = async (artwork: any) => {
     setSelectedArtwork(artwork);
     setShowModal(true);
     setLoadingModal(true);
@@ -51,12 +71,11 @@ const Artworks = ({ artworks, isLoading }) => {
           />
         ) : artworks._embedded.artworks.length > 0 ? (
           <Row className="g-4 justify-content-start">
-            {artworks._embedded.artworks.map((artwork, index) => (
+            {artworks._embedded.artworks.map((artwork: any, index: number) => (
               <Col key={index} md={6} lg={3} className="mb-4">
                 <Card
                   className="shadow-sm border-0 rounded"
                   style={{
-                    // height: index % 2 === 0 ? "460px" : "380px",
                     display: "flex",
                     flexDirection: "column",
                     overflow: "hidden",
@@ -68,7 +87,6 @@ const Artworks = ({ artworks, isLoading }) => {
                     alt={artwork.title}
                     className="img-fluid"
                     style={{
-                      // height: index % 2 === 0 ? "70%" : "60%",
                       width: "100%",
                       height: "auto",
                       objectFit: "cover",
@@ -97,10 +115,13 @@ const Artworks = ({ artworks, isLoading }) => {
                     style={{ fontSize: "14px", padding: "8px 0" }}
                     onClick={() => handleShowModal(artwork)}
                     onMouseEnter={(e) =>
-                      e.target.classList.add("bg-primary", "text-white")
+                      e.currentTarget.classList.add("bg-primary", "text-white")
                     }
                     onMouseLeave={(e) =>
-                      e.target.classList.remove("bg-primary", "text-white")
+                      e.currentTarget.classList.remove(
+                        "bg-primary",
+                        "text-white"
+                      )
                     }
                   >
                     View categories
@@ -125,10 +146,14 @@ const Artworks = ({ artworks, isLoading }) => {
         onHide={() => setShowModal(false)}
         centered
         size="xl"
+        fullscreen="sm-down"
       >
-        <Modal.Header closeButton className="d-flex align-items-center">
+        <Modal.Header
+          closeButton
+          className="d-flex flex-column flex-md-row align-items-center"
+        >
           {selectedArtwork && (
-            <div className="d-flex align-items-center">
+            <>
               <img
                 src={selectedArtwork._links.thumbnail.href}
                 alt={selectedArtwork.title}
@@ -139,14 +164,16 @@ const Artworks = ({ artworks, isLoading }) => {
                   marginRight: "10px",
                   borderRadius: "5px",
                 }}
+                className="mb-3 mb-md-0"
               />
               <div>
                 <h5 className="mb-0">{selectedArtwork.title}</h5>
                 <p className="text-muted mb-0">{selectedArtwork.date}</p>
               </div>
-            </div>
+            </>
           )}
         </Modal.Header>
+
         <Modal.Body>
           {loadingModal ? (
             <div className="text-center my-4">
@@ -159,27 +186,16 @@ const Artworks = ({ artworks, isLoading }) => {
           ) : modaldata && modaldata._embedded.genes.length > 0 ? (
             <Container fluid>
               <Row className="g-4">
-                {modaldata._embedded.genes.map((gene, index) => (
+                {modaldata._embedded.genes.map((gene: any, index: number) => (
                   <Col key={index} md={6} lg={3} className="mb-3">
-                    <Card
-                      className="shadow-sm border-0"
-                      style={{
-                        width: "250px",
-                        height: "280px",
-                        borderRadius: "5px",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "space-between",
-                        textAlign: "center",
-                      }}
-                    >
+                    <Card className="shadow-sm border-0" style={geneCardStyle}>
                       <Card.Img
                         variant="top"
                         src={gene._links.thumbnail.href}
                         alt={gene.name}
                         className="img-fluid"
                         style={{
-                          height: "220px",
+                          height: "280px", // Changed here: card image height is now 300px
                           objectFit: "cover",
                           borderTopLeftRadius: "8px",
                           borderTopRightRadius: "8px",
