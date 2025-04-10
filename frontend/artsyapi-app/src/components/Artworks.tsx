@@ -25,17 +25,6 @@ const Artworks = ({ artworks, isLoading }: any) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Inline style for gene cards based on mobile status
-  const geneCardStyle = {
-    width: isMobile ? "370px" : "250px",
-    height: isMobile ? "320px" : "280px",
-    borderRadius: "5px",
-    display: "flex",
-    flexDirection: "column" as const,
-    justifyContent: "space-between",
-    textAlign: "center" as const,
-  };
-
   const handleShowModal = async (artwork: any) => {
     setSelectedArtwork(artwork);
     setShowModal(true);
@@ -144,37 +133,50 @@ const Artworks = ({ artworks, isLoading }: any) => {
       <Modal
         show={showModal}
         onHide={() => setShowModal(false)}
-        centered
         size="xl"
-        fullscreen="sm-down"
+        dialogClassName="custom-modal-top"
       >
         <Modal.Header
           closeButton
-          className="d-flex flex-column flex-md-row align-items-center"
+          style={{ borderBottom: "none", paddingRight: "16px" }}
         >
-          {selectedArtwork && (
-            <>
-              <img
-                src={selectedArtwork._links.thumbnail.href}
-                alt={selectedArtwork.title}
-                style={{
-                  width: "50px",
-                  height: "50px",
-                  objectFit: "cover",
-                  marginRight: "10px",
-                  borderRadius: "5px",
-                }}
-                className="mb-3 mb-md-0"
-              />
-              <div>
-                <h5 className="mb-0">{selectedArtwork.title}</h5>
-                <p className="text-muted mb-0">{selectedArtwork.date}</p>
+          <Modal.Title>
+            {selectedArtwork && (
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              >
+                <img
+                  src={selectedArtwork._links.thumbnail.href}
+                  alt={selectedArtwork.title}
+                  style={{
+                    width: "65px",
+                    height: "65px",
+                    objectFit: "cover",
+                    borderRadius: "4px",
+                  }}
+                />
+                <div>
+                  <h5
+                    style={{
+                      marginBottom: "2px",
+                      fontSize: "1rem",
+                      fontWeight: "normal",
+                    }}
+                  >
+                    {selectedArtwork.title}
+                  </h5>
+                  <p style={{ fontSize: "0.85rem", marginBottom: 0 }}>
+                    {selectedArtwork.date}
+                  </p>
+                </div>
               </div>
-            </>
-          )}
+            )}
+          </Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <hr style={{ margin: 0 }} />
+
+        <Modal.Body style={{ minHeight: "200px" }}>
           {loadingModal ? (
             <div className="text-center my-4">
               <Spinner
@@ -188,26 +190,37 @@ const Artworks = ({ artworks, isLoading }: any) => {
               <Row className="g-4">
                 {modaldata._embedded.genes.map((gene: any, index: number) => (
                   <Col key={index} md={6} lg={3} className="mb-3">
-                    <Card className="shadow-sm border-0" style={geneCardStyle}>
+                    {/* Updated card styling for the gene name */}
+                    <Card
+                      className="shadow-sm"
+                      style={{
+                        borderRadius: "4px",
+                        border: "1px solid #ddd",
+                        overflow: "hidden",
+                      }}
+                    >
                       <Card.Img
                         variant="top"
                         src={gene._links.thumbnail.href}
                         alt={gene.name}
-                        className="img-fluid"
                         style={{
-                          height: "280px", // Changed here: card image height is now 300px
+                          height: isMobile ? "400px" : "220px",
                           objectFit: "cover",
-                          borderTopLeftRadius: "8px",
-                          borderTopRightRadius: "8px",
                         }}
                       />
-                      <Card.Body className="text-center p-2">
-                        <Card.Title
-                          className="fs-6 fw-normal"
-                          style={{ marginBottom: "0" }}
+                      <Card.Body
+                        className="text-center"
+                        style={{ padding: "10px" }}
+                      >
+                        <Card.Text
+                          style={{
+                            margin: 0,
+                            fontSize: "0.9rem",
+                            fontWeight: "normal",
+                          }}
                         >
                           {gene.name}
-                        </Card.Title>
+                        </Card.Text>
                       </Card.Body>
                     </Card>
                   </Col>
