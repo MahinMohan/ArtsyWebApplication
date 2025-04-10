@@ -98,8 +98,12 @@ function Register({ onLogin, onData, setloggedinuser }) {
               type="text"
               placeholder="John Doe"
               value={fullname}
-              onChange={(e) => setFullname(e.target.value)}
-              onBlur={() => validateField("fullname", fullname)}
+              onChange={(e) => {
+                setFullname(e.target.value);
+                validateField("fullname", e.target.value);
+              }}
+              // onChange={(e) => setFullname(e.target.value)}
+              // onBlur={() => validateField("fullname", fullname)}
               onKeyDown={handleKeyPress}
               isInvalid={!!errors.fullname}
               size="sm"
@@ -113,10 +117,14 @@ function Register({ onLogin, onData, setloggedinuser }) {
             <Form.Label className="fs-6">Email Address</Form.Label>
             <Form.Control
               type="email"
-              placeholder="Enter your email"
+              placeholder="Enter email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onBlur={() => validateField("email", email)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                validateField("email", e.target.value);
+              }}
+              // onChange={(e) => setEmail(e.target.value)}
+              // onBlur={() => validateField("email", email)}
               isInvalid={!!errors.email}
               size="sm"
             />
@@ -129,10 +137,14 @@ function Register({ onLogin, onData, setloggedinuser }) {
             <Form.Label className="fs-6">Password</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Create a password"
+              placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onBlur={() => validateField("password", password)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                validateField("password", e.target.value);
+              }}
+              // onChange={(e) => setPassword(e.target.value)}
+              // onBlur={() => validateField("password", password)}
               isInvalid={!!errors.password}
               size="sm"
             />

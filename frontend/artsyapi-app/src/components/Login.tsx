@@ -89,8 +89,12 @@ function Login({ onLogin, onData, setloggedinuser }) {
               type="email"
               placeholder="Enter email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onBlur={() => validateField("email", email)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                validateField("email", e.target.value);
+              }}
+              // onChange={(e) => setEmail(e.target.value)}
+              // onBlur={() => validateField("email", email)}
               onKeyDown={handleKeyPress}
               isInvalid={!!errors.email}
               size="sm"
@@ -106,8 +110,12 @@ function Login({ onLogin, onData, setloggedinuser }) {
               type="password"
               placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onBlur={() => validateField("password", password)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                validateField("password", e.target.value);
+              }}
+              // onChange={(e) => setPassword(e.target.value)}
+              // onBlur={() => validateField("password", password)}
               isInvalid={!!errors.password}
               size="sm"
             />
