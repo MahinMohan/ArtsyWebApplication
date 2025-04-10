@@ -26,8 +26,7 @@ function TopNavBar(props) {
           message: "Account deleted",
           variant: "danger",
         });
-        console.log("Deleted account");
-        console.log(data);
+
         props.onlogin(false);
       } else {
         console.log("Problem with deleting out");
@@ -49,8 +48,7 @@ function TopNavBar(props) {
           message: "Logged out",
           variant: "success",
         });
-        console.log("Logged out");
-        console.log(data);
+
         props.onlogin(false);
         window.location.href = "/search";
         sessionStorage.removeItem("artist_id");
@@ -81,7 +79,6 @@ function TopNavBar(props) {
           <Nav>
             {props.isLoggedIn ? (
               <>
-                {/* <Nav.Link as={Link} to="/search" className={linkClass("/search")}> */}
                 <Nav.Link
                   as={Link}
                   to="/search"

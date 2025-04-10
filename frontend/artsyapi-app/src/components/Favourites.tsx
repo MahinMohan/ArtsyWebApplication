@@ -16,10 +16,6 @@ function Favourites(props) {
     return () => clearInterval(interval);
   }, []);
 
-  // useEffect(() => {
-  //   getFavourites();
-  // }, []);
-
   const getFavourites = async () => {
     try {
       const res = await fetch("/api/getfavourites", {
@@ -50,9 +46,6 @@ function Favourites(props) {
       const data = await res.json();
 
       if (res.ok) {
-        // setFavourites((prev) =>
-        //   prev.filter((fav) => fav.artistId !== artistId)
-        // );
         props.handlenotification({
           message: "Removed from favourites",
           variant: "danger",

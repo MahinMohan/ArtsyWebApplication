@@ -190,7 +190,6 @@ const Artworks = ({ artworks, isLoading }: any) => {
               <Row className="g-4">
                 {modaldata._embedded.genes.map((gene: any, index: number) => (
                   <Col key={index} md={6} lg={3} className="mb-3">
-                    {/* Updated card styling for the gene name */}
                     <Card
                       className="shadow-sm"
                       style={{

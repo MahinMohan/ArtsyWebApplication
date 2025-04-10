@@ -39,7 +39,6 @@ function Register({ onLogin, onData, setloggedinuser }) {
     }
 
     try {
-      console.log(JSON.stringify({ fullname, email, password }));
       const response = await fetch("/api/createaccount", {
         method: "POST",
         headers: {
@@ -47,11 +46,11 @@ function Register({ onLogin, onData, setloggedinuser }) {
         },
         body: JSON.stringify({ fullname, email, password }),
       });
-      console.log("data sent");
+
       const validation = await response.json();
       const gravatar = validation.gravatar;
       const name = validation.fullname;
-      console.log(validation);
+
       if (validation.message == "User with this email already exists") {
         onLogin(false);
         setErrors({ ...errors, email: validation.message });
@@ -102,8 +101,6 @@ function Register({ onLogin, onData, setloggedinuser }) {
                 setFullname(e.target.value);
                 validateField("fullname", e.target.value);
               }}
-              // onChange={(e) => setFullname(e.target.value)}
-              // onBlur={() => validateField("fullname", fullname)}
               onKeyDown={handleKeyPress}
               isInvalid={!!errors.fullname}
               size="sm"
@@ -123,8 +120,6 @@ function Register({ onLogin, onData, setloggedinuser }) {
                 setEmail(e.target.value);
                 validateField("email", e.target.value);
               }}
-              // onChange={(e) => setEmail(e.target.value)}
-              // onBlur={() => validateField("email", email)}
               isInvalid={!!errors.email}
               size="sm"
             />
@@ -143,8 +138,6 @@ function Register({ onLogin, onData, setloggedinuser }) {
                 setPassword(e.target.value);
                 validateField("password", e.target.value);
               }}
-              // onChange={(e) => setPassword(e.target.value)}
-              // onBlur={() => validateField("password", password)}
               isInvalid={!!errors.password}
               size="sm"
             />

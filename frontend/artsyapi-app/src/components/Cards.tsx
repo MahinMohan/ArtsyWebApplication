@@ -19,14 +19,12 @@ const Cards = ({
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [SelectedclickedArtistId, setSelectedclickedArtistId] = useState(null);
   const [artworks, setArtworks] = useState({ _embedded: { artworks: [] } });
-  // const [artistinfo, setartistinfo] = useState(null);
   const [selectedartist, setselectedartist] = useState(null);
   const [activeTab, setActiveTab] = useState("info");
   const [artistdattoinfo, setartistdatatoinfo] = useState({});
   const [isLoadingArtistInfo, setIsLoadingArtistInfo] = useState(false);
   const [isLoadingArtworks, setIsLoadingArtworks] = useState(false);
 
-  // 1) Determine mobile or desktop
   const isMobile = window.innerWidth < 992;
 
   useEffect(() => {
@@ -188,8 +186,8 @@ const Cards = ({
         border: "none",
         borderRadius: "10px",
 
-        width: "calc(100% - 2rem)", // subtracts 2rem from full width, creating side gaps
-        margin: "0 auto", // centers the container
+        width: "calc(100% - 2rem)",
+        margin: "0 auto",
       }
     : {
         border: "none",

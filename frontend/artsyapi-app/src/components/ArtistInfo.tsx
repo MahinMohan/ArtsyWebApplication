@@ -12,14 +12,12 @@ function ArtistInfo({
   setFavourites,
   handlenotification,
 }) {
-  // console.log(clickedartist);
   const artistId = clickedartist?._links?.self?.href.split("/").pop();
 
   const isFavorited = favourites?.some((fav) => fav.artistId === artistId);
 
   const addToFavourites = async (artist) => {
     try {
-      console.log(artist);
       const artistdata = {
         artistId: artistId,
         title: clickedartist.name,
@@ -36,12 +34,7 @@ function ArtistInfo({
       });
 
       const data = await res.json();
-      console.log("favs data", artistdata);
 
-      // setFavourites((prev) => [
-      //   ...prev,
-      //   { artistId, title: clickedartist.name },
-      // ]);
       setFavourites(data.user);
     } catch (error) {
       console.error("Error adding to favourites:", error);
@@ -58,7 +51,6 @@ function ArtistInfo({
 
       const data = await res.json();
 
-      // setFavourites((prev) => prev.filter((fav) => fav.artistId !== artistId));
       setFavourites(data.user);
     } catch (error) {
       console.error("Error deleting from favourites:", error);
@@ -69,19 +61,14 @@ function ArtistInfo({
     try {
       const artistId = artist._links?.self?.href.split("/").pop();
       const isFavorited = favourites?.some((fav) => fav.artistId === artistId);
-      console.log(artist);
 
       if (isFavorited) {
-        // setFavourites((prev) =>
-        //   prev.filter((fav) => fav.artistId !== artistId)
-        // );
         handlenotification({
           message: "Removed from favourites",
           variant: "danger",
         });
         await deleteFromFavourites(artist);
       } else {
-        // setFavourites((prev) => [...prev, { artistId, title: artist.name }]);
         handlenotification({
           message: "Added to favourites",
           variant: "success",
@@ -158,8 +145,8 @@ function ArtistInfo({
                 }}
               >
                 {clickedartist.biography
-                  ?.replace(/[‐‑‒–—―]/g, "-") // Normalize all Unicode dashes to '-'
-                  .replace(/(\w+)-\s*(\w+)/g, "$1$2") // Merge hyphenated words + optional whitespace
+                  ?.replace(/[‐‑‒–—―]/g, "-")
+                  .replace(/(\w+)-\s*(\w+)/g, "$1$2")
                   .split(/\n+/)
                   .map((para, index) => (
                     <p key={index} className="mb-3">

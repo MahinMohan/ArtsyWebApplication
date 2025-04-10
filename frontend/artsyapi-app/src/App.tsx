@@ -19,7 +19,6 @@ function App() {
   const [loggedinuser, setloggedinuser] = useState();
   const [loggedname, setloggedemail] = useState("");
   const [loggedgravatar, setloggedgravatar] = useState("");
-  // Change single notification to an array of notifications
   const [notifications, setNotifications] = useState([]);
 
   const setFavourites = (obj) => {
@@ -35,7 +34,6 @@ function App() {
         if (!response.ok) throw new Error("Failed to fetch user info");
 
         const data = await response.json();
-        console.log(data);
 
         if (data.message === "Authenticated") {
           const updatedUser = {
@@ -43,11 +41,10 @@ function App() {
             favourites: data.user.favourites || [],
           };
           setloggedinuser(data.user);
-          console.log("Logged in user=", data.user);
+
           setisloggedin(true);
           setloggedgravatar(data.user.gravatar);
           setloggedemail(data.user.fullname);
-          console.log("Logged in user data", data);
         } else {
           setloggedinuser(null);
           setisloggedin(false);
@@ -62,12 +59,10 @@ function App() {
     fetchUser();
   }, []);
 
-  // Append new notifications to the array
   const handlenotification = (obj) => {
     setNotifications((prev) => [...prev, obj]);
   };
 
-  // Remove a notification at a given index
   const removeNotification = (indexToRemove) => {
     setNotifications((prev) => prev.filter((_, i) => i !== indexToRemove));
   };
@@ -146,7 +141,7 @@ function App() {
         />
       </Routes>
       <FooterBar />
-      {/* Render notifications, passing each its index and an onClose callback */}
+
       {notifications.map((notification, index) => (
         <Notifications
           key={index}

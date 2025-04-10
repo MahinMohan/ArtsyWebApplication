@@ -50,7 +50,7 @@ app.get('/api/me', authenticateusertoken, (req, res) => {
     }
   
     const { fullname, email, gravatar, favourites } = req.user;
-    console.log(fullname,email)
+    
   
     res.status(200).json({
       message: 'Authenticated',
@@ -121,7 +121,7 @@ app.get("/api/artistdata", async (req, res) => {
             
     
             const data = await response.json();
-            console.log(data)
+            
     
             res.send(data)
             
@@ -254,7 +254,7 @@ app.get("/api/similarartists", async (req, res) => {
 
 
 app.post("/api/createaccount", async(req,res)=>{
-    console.log(req.body);
+    
     const {fullname,email,password} = req.body;
     const userexists = await User.findOne({email});
     if(userexists)
@@ -293,7 +293,7 @@ app.post("/api/login", async(req,res)=>
     {
         
         const {email,password} = req.body;
-        console.log({email,password});
+        
         try
         {
             const logincheck = await User.findOne({email})
@@ -317,7 +317,7 @@ app.post("/api/login", async(req,res)=>
             const gravatar = logincheck.gravatar;
             const fullname = logincheck.fullname;
             await logincheck.save();
-            console.log(logincheck)
+            
             // res.json({ gravatar, fullname, token});
             res.json(logincheck)
 
@@ -329,7 +329,7 @@ app.post("/api/login", async(req,res)=>
 
 app.delete("/api/logout", authenticateusertoken, async(req,res)=>
 {
-    console.log("logout check");
+    
     req.user.tokens = req.user.tokens.filter(token => token!=req.token);
     await req.user.save()
     res.clearCookie("token")
@@ -347,7 +347,7 @@ app.delete("/api/deleteaccount", authenticateusertoken, async(req,res)=>
         }
         else
         {
-            console.log("Deleted User",deleteduser)
+            
             res.send(deleteduser);
         }
     } catch(error)

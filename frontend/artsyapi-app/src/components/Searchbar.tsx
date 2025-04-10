@@ -29,7 +29,6 @@ function Searchbar({
     params.id || sessionStorage.getItem("artist_id")
   );
 
-  // Use URL param if available; otherwise, if an artist id is stored in session, use that.
   const id = useParams().id || sessionStorage.getItem("artist_id");
 
   const handleforminput = (e) => {
@@ -39,20 +38,17 @@ function Searchbar({
   const handlesearch = async () => {
     sessionStorage.removeItem("artist_id");
     if (!searchinput.trim()) {
-      console.log("Empty input");
       return;
     }
     try {
       setsearchload(true);
-      setSearched(true); // Mark that a search has been performed
+      setSearched(true);
       const response = await fetch(`/api/searchdata?q=${searchinput}`);
       if (!response.ok) {
-        console.log("Failed to receive data");
         setsearchload(false);
         return;
       }
       const data = await response.json();
-      console.log("Data received=", data);
       setartistdata(data);
     } catch (error) {
       console.log("Backend server error", error);
@@ -115,8 +111,8 @@ function Searchbar({
             variant="danger"
             className="text-start"
             style={{
-              padding: "0.5rem 1rem", // adjust for desired tightness
-              marginBottom: "0.5rem", // reduce vertical gap below alert
+              padding: "0.5rem 1rem",
+              marginBottom: "0.5rem",
             }}
           >
             No results.
@@ -124,7 +120,6 @@ function Searchbar({
         </Container>
       )}
 
-      {/* Always render Cards but pass showCards prop to conditionally display its UI */}
       <Cards
         artistdata={artistdata}
         isLoggedIn={isLoggedIn}
@@ -132,7 +127,7 @@ function Searchbar({
         artistid={artistIdFromUrl}
         setFavourites={setFavourites}
         handlenotification={handlenotification}
-        showCards={searched} // Cards UI will be hidden unless a search has been performed
+        showCards={searched}
         artistinfo={artistinfo}
         setartistinfo={setartistinfo}
       />

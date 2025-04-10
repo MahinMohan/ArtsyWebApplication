@@ -33,8 +33,6 @@ function Login({ onLogin, onData, setloggedinuser }) {
 
     if (isValidEmail(email) && password) {
       try {
-        console.log("Login data sent", { email, password });
-
         const response = await fetch("/api/login", {
           method: "POST",
           headers: {
@@ -50,7 +48,7 @@ function Login({ onLogin, onData, setloggedinuser }) {
           setErrors({ ...errors, password: validation.message });
           return;
         }
-        console.log(validation);
+
         if (response.ok) {
           setEmail("");
           setPassword("");
@@ -93,8 +91,6 @@ function Login({ onLogin, onData, setloggedinuser }) {
                 setEmail(e.target.value);
                 validateField("email", e.target.value);
               }}
-              // onChange={(e) => setEmail(e.target.value)}
-              // onBlur={() => validateField("email", email)}
               onKeyDown={handleKeyPress}
               isInvalid={!!errors.email}
               size="sm"
@@ -114,8 +110,6 @@ function Login({ onLogin, onData, setloggedinuser }) {
                 setPassword(e.target.value);
                 validateField("password", e.target.value);
               }}
-              // onChange={(e) => setPassword(e.target.value)}
-              // onBlur={() => validateField("password", password)}
               isInvalid={!!errors.password}
               size="sm"
             />
