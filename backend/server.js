@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const path = require('path');
+const port = process.env.PORT || 3000;
 const mongoose = require("mongoose");
 require("./database/database.js")
 const User = require("./database/account.js")
@@ -43,7 +44,7 @@ async function get_token()
 }
 
 
-app.get('/me', authenticateusertoken, (req, res) => {
+app.get('/api/me', authenticateusertoken, (req, res) => {
     if (!req.user) {
       return res.status(401).json({ message: 'Unauthenticated' });
     }
@@ -63,7 +64,7 @@ app.get('/me', authenticateusertoken, (req, res) => {
   });
 
 
-app.get("/searchdata", async (req, res) => {
+app.get("/api/searchdata", async (req, res) => {
     x_app_token = await get_token();
     const artist = req.query.q;
     const url = 'https://api.artsy.net/api/search';
@@ -100,7 +101,7 @@ app.get("/searchdata", async (req, res) => {
     });
 
     
-app.get("/artistdata", async (req, res) => {
+app.get("/api/artistdata", async (req, res) => {
         x_app_token = await get_token();
         const id = req.query.id;
         const url = 'https://api.artsy.net/api/artists/'+id;
@@ -120,6 +121,7 @@ app.get("/artistdata", async (req, res) => {
             
     
             const data = await response.json();
+            console.log(data)
     
             res.send(data)
             
@@ -135,7 +137,7 @@ app.get("/artistdata", async (req, res) => {
         });
 
 
-app.get("/artworksdata", async (req, res) => {
+app.get("/api/artworksdata", async (req, res) => {
             x_app_token = await get_token();
             const id = req.query.id;
             const url = 'https://api.artsy.net/api/artworks';
@@ -175,7 +177,7 @@ app.get("/artworksdata", async (req, res) => {
             });
 
 
-app.get("/genesdata", async (req, res) => {
+app.get("/api/genesdata", async (req, res) => {
                 x_app_token = await get_token();
                 const artworkid = req.query.id;
                 const url = 'https://api.artsy.net/api/genes';
@@ -213,7 +215,7 @@ app.get("/genesdata", async (req, res) => {
                 });
 
 
-app.get("/similarartists", async (req, res) => {
+app.get("/api/similarartists", async (req, res) => {
             x_app_token = await get_token();
             const artistid = req.query.id;
                     const url = 'https://api.artsy.net/api/artists';
@@ -251,7 +253,7 @@ app.get("/similarartists", async (req, res) => {
                     });
 
 
-app.post("/createaccount", async(req,res)=>{
+app.post("/api/createaccount", async(req,res)=>{
     console.log(req.body);
     const {fullname,email,password} = req.body;
     const userexists = await User.findOne({email});
@@ -287,7 +289,7 @@ app.post("/createaccount", async(req,res)=>{
 
 
 
-app.post("/login", async(req,res)=>
+app.post("/api/login", async(req,res)=>
     {
         
         const {email,password} = req.body;
@@ -325,7 +327,7 @@ app.post("/login", async(req,res)=>
         }
     });
 
-app.delete("/logout", authenticateusertoken, async(req,res)=>
+app.delete("/api/logout", authenticateusertoken, async(req,res)=>
 {
     console.log("logout check");
     req.user.tokens = req.user.tokens.filter(token => token!=req.token);
@@ -334,7 +336,7 @@ app.delete("/logout", authenticateusertoken, async(req,res)=>
     res.send(req.user);
 }) 
 
-app.delete("/deleteaccount", authenticateusertoken, async(req,res)=>
+app.delete("/api/deleteaccount", authenticateusertoken, async(req,res)=>
 {
     try
     {
@@ -355,7 +357,7 @@ app.delete("/deleteaccount", authenticateusertoken, async(req,res)=>
 });
 
 
-app.post("/addtofavourites", authenticateusertoken, async(req,res)=>
+app.post("/api/addtofavourites", authenticateusertoken, async(req,res)=>
 {
     const {
         artistId,
@@ -398,13 +400,13 @@ app.post("/addtofavourites", authenticateusertoken, async(req,res)=>
 
 
 
-app.get("/getfavourites", authenticateusertoken, async(req,res)=>
+app.get("/api/getfavourites", authenticateusertoken, async(req,res)=>
 {
     res.send(req.user.favourites);
 })
 
 
-app.delete("/deletefavourites", authenticateusertoken, async(req,res)=>{
+app.delete("/api/deletefavourites", authenticateusertoken, async(req,res)=>{
   const artistId = req.body.id;
   try {
     const exists = req.user.favourites.find(
@@ -425,6 +427,12 @@ app.delete("/deletefavourites", authenticateusertoken, async(req,res)=>{
   }
     
 })
+
+app.use(express.static(path.join(__dirname, "dist"))); // <-- Serve static frontend
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "dist", "index.html")); // <-- For React Router
+});
 
 
 app.listen(port, () => {

@@ -45,9 +45,7 @@ function Searchbar({
     try {
       setsearchload(true);
       setSearched(true); // Mark that a search has been performed
-      const response = await fetch(
-        `http://localhost:3000/searchdata?q=${searchinput}`
-      );
+      const response = await fetch(`/api/searchdata?q=${searchinput}`);
       if (!response.ok) {
         console.log("Failed to receive data");
         setsearchload(false);
