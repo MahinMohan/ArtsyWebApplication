@@ -90,6 +90,7 @@ function Searchbar({
             variant="primary"
             onClick={handlesearch}
             disabled={!searchinput.trim()}
+            style={{ backgroundColor: "#17479E", borderColor: "#17479E" }}
           >
             Search
             {searchload ? (
