@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Card, Row, Col, Button } from "react-bootstrap";
+import { Container, Card, Row, Col, Button, Alert } from "react-bootstrap";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
@@ -96,61 +96,67 @@ function Favourites(props) {
       className="mt-4 pb-5"
       style={{ maxWidth: "1100px", margin: "0 auto" }}
     >
-      <Row className="g-5">
-        {props.Favourites.map((fav, idx) => (
-          <Col key={idx} md={6} lg={4} xl={4}>
-            <Card
-              className="text-white shadow-sm border-0 bg-dark position-relative"
-              style={{ height: "180px", cursor: "pointer", width: "22rem" }}
-              onClick={() => {
-                openartistcard(fav.artistId);
-              }}
-            >
-              <Card.Img
-                src={
-                  fav.image != "/assets/shared/missing_image.png"
-                    ? fav.image
-                    : "/artsy_logo.svg"
-                }
-                alt={fav.title}
-                style={{
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  top: 0,
-                  left: 0,
-                  zIndex: 0,
-                  filter: "blur(4px) brightness(0.6)",
+      {props.Favourites && props.Favourites.length > 0 ? (
+        <Row className="g-5">
+          {props.Favourites.map((fav, idx) => (
+            <Col key={idx} md={6} lg={4} xl={4}>
+              <Card
+                className="text-white shadow-sm border-0 bg-dark position-relative"
+                style={{ height: "180px", cursor: "pointer", width: "22rem" }}
+                onClick={() => {
+                  openartistcard(fav.artistId);
                 }}
-              />
+              >
+                <Card.Img
+                  src={
+                    fav.image !== "/assets/shared/missing_image.png"
+                      ? fav.image
+                      : "/artsy_logo.svg"
+                  }
+                  alt={fav.title}
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    top: 0,
+                    left: 0,
+                    zIndex: 0,
+                    filter: "blur(4px) brightness(0.6)",
+                  }}
+                />
 
-              <Card.Body className="d-flex flex-column justify-content-between position-relative z-1">
-                <div>
-                  <Card.Title className="fs-5 mb-0">{fav.title}</Card.Title>
-                  <Card.Text className="mb-0">
-                    {fav.birthyear} - {fav.deathyear}
-                  </Card.Text>
-                  <Card.Text className="mb-2">{fav.nationality}</Card.Text>
-                </div>
+                <Card.Body className="d-flex flex-column justify-content-between position-relative z-1">
+                  <div>
+                    <Card.Title className="fs-5 mb-0">{fav.title}</Card.Title>
+                    <Card.Text className="mb-0">
+                      {fav.birthyear} - {fav.deathyear}
+                    </Card.Text>
+                    <Card.Text className="mb-2">{fav.nationality}</Card.Text>
+                  </div>
 
-                <div className="d-flex justify-content-between align-items-center">
-                  <small className="text-white">
-                    {getLiveTimeAgo(fav.addedAt)}
-                  </small>
-                  <Button
-                    variant="link"
-                    className="text-white p-0 text-decoration-underline"
-                    onClick={(e) => handleRemove(e, fav.artistId)}
-                  >
-                    Remove
-                  </Button>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <small className="text-white">
+                      {getLiveTimeAgo(fav.addedAt)}
+                    </small>
+                    <Button
+                      variant="link"
+                      className="text-white p-0 text-decoration-underline"
+                      onClick={(e) => handleRemove(e, fav.artistId)}
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      ) : (
+        <Alert variant="danger" className="w-100">
+          No favourite artists
+        </Alert>
+      )}
     </Container>
   );
 }
