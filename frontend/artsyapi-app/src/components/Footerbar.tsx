@@ -23,7 +23,6 @@ const FooterBar = () => {
       <Container className="justify-content-center">
         <a
           href="https://www.artsy.net"
-          target="_blank"
           rel="noopener noreferrer"
           style={{ color: "white", textDecoration: "none" }}
         >
