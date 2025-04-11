@@ -17,11 +17,10 @@ const authenticateusertoken = async(req,res,next) =>
     {
         const decoded = jwt.verify(token, JWT_SECRET);
         req.user = decoded;
-        console.log(token);
-        console.log("The id ="+decoded._id);
+        
 
         const loggeduser = await User.findOne({_id:decoded._id});
-        console.log(loggeduser.fullname);
+        
         req.user = loggeduser;
         req.token = token;
         next();
