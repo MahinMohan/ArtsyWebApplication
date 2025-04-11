@@ -50,7 +50,7 @@ function TopNavBar(props) {
         });
 
         props.onlogin(false);
-        window.location.href = "/search";
+        navigate("/");
         sessionStorage.removeItem("artist_id");
       } else {
         console.log("Problem with log out");

@@ -179,7 +179,11 @@ function Similarartists({
               </Button>
 
               <Card.Img
-                src={artist._links.thumbnail?.href}
+                src={
+                  artist._links.thumbnail?.href
+                    ? artist._links.thumbnail?.href
+                    : "/artsy_logo.svg"
+                }
                 onError={(e) => (e.target.src = "/artsy_logo.svg")}
                 className="w-100"
                 style={{
