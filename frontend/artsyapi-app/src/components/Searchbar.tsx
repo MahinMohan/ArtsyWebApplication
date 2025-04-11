@@ -54,6 +54,7 @@ function Searchbar({
       console.log("Backend server error", error);
     } finally {
       setsearchload(false);
+      setartistinfo(null);
     }
   };
 
