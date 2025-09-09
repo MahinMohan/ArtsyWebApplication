@@ -46,8 +46,6 @@ ARTSY_CLIENT_SECRET=your_artsy_client_secret
 PORT=3000
 
 
-⚠️ Important: Your repo currently has hardcoded credentials in server.js and database.js. Update these files to read from process.env for better security.
-
 For example, replace:
 
 const client_id = "xxxxx";
@@ -70,7 +68,7 @@ The frontend is already built and served from the backend’s dist folder.
 Just visit:
 👉 http://localhost:3000 in your browser.
 
-If you want to develop the frontend separately, you’ll need the original React source code (currently not included in this repo).
+
 
 🔑 Features
 
@@ -93,10 +91,6 @@ gcloud app deploy backend/app.yaml
 Inside backend/ directory:
 
 npm start → Run the server
-
-📸 Screenshots
-
-(Add screenshots of your UI here if you want)
 
 🤝 Contributing
 
