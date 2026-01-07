@@ -2,6 +2,10 @@
   "version": 2,
   "builds": [
     {
+      "src": "backend/dist/**",
+      "use": "@vercel/static"
+    },
+    {
       "src": "backend/server.js",
       "use": "@vercel/node"
     }
@@ -10,6 +14,14 @@
     {
       "src": "/api/(.*)",
       "dest": "backend/server.js"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "backend/dist/assets/$1"
+    },
+    {
+      "src": "/(artsy_logo.svg|vite.svg)",
+      "dest": "backend/dist/$1"
     },
     {
       "src": "/(.*)",
