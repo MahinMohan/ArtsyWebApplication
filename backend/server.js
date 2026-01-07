@@ -5,17 +5,19 @@ const port = process.env.PORT || 3000;
 const mongoose = require("mongoose");
 require("./database/database.js")
 const User = require("./database/account.js")
-const brcypt = require("bcrypt")
+const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const crypto = require('crypto');
-JWT_SECRET = "A256ygh#1223luos";
+JWT_SECRET = process.env.JWT_SECRET || "A256ygh#1223luos";
 const {authenticateusertoken} = require("./middleware.js")
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 app.use(express.json());
 const cors = require('cors');
 
-const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
+const allowedOrigins = process.env.NODE_ENV === 'production' 
+    ? [process.env.FRONTEND_URL || "https://your-app.vercel.app"] 
+    : ["http://localhost:5173", "http://localhost:5174"];
 
 
 app.use(cors({
@@ -27,8 +29,8 @@ app.use(cors({
 async function get_token()
 {
     try {
-        const client_id = "0a77160e9a2a4a299043"; 
-        const client_secret = "b4e8e053b9ffe81da44ba61a31003d4c";
+        const client_id = process.env.ARTSY_CLIENT_ID || "0a77160e9a2a4a299043"; 
+        const client_secret = process.env.ARTSY_CLIENT_SECRET || "b4e8e053b9ffe81da44ba61a31003d4c";
         const url = `https://api.artsy.net/api/tokens/xapp_token?client_id=${client_id}&client_secret=${client_secret}`;
 
         const response = await fetch(url, {
@@ -226,6 +228,7 @@ app.get("/api/similarartists", async (req, res) => {
             
                      const params = new URLSearchParams({
                                 "similar_to_artist_id" : artistid,
+                                "size":"10"
                                  });
                   
                     try {
@@ -266,14 +269,14 @@ app.post("/api/createaccount", async(req,res)=>{
 
     else
     {
-        const encryptedpwd = await brcypt.hash(password,12);
+        const encryptedpwd = await bcrypt.hash(password,12);
         const newuser = new User({fullname, email, password:encryptedpwd});
         const token = jwt.sign({ _id : newuser._id}, JWT_SECRET, { expiresIn: "1h" });
         res.cookie("token", token, {
             maxAge: 60 * 60 * 1000,
             httpOnly: true,
-            sameSite: "lax",
-            secure: false 
+            sameSite: process.env.NODE_ENV === 'production' ? "none" : "lax",
+            secure: process.env.NODE_ENV === 'production' ? true : false 
           });
         newuser.tokens.push(token);
         const normalizedEmail = email.trim().toLowerCase(); 
@@ -301,7 +304,7 @@ app.post("/api/login", async(req,res)=>
             {
                 return res.json({ message: "Password or email is incorrect" });
             }
-            const match = await brcypt.compare(password,logincheck.password);
+            const match = await bcrypt.compare(password,logincheck.password);
             if(!match)
             {
               return res.json({ message: "Password or email is incorrect" });
@@ -311,8 +314,8 @@ app.post("/api/login", async(req,res)=>
             res.cookie("token", token, {
                 maxAge: 60 * 60 * 1000,
                 httpOnly: true,
-                sameSite: "lax",
-                secure: false
+                sameSite: process.env.NODE_ENV === 'production' ? "none" : "lax",
+                secure: process.env.NODE_ENV === 'production' ? true : false
               });
             const gravatar = logincheck.gravatar;
             const fullname = logincheck.fullname;

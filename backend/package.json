@@ -1,5 +1,15 @@
 {
-  "main": "node server.js",
+  "name": "artsy-backend",
+  "version": "1.0.0",
+  "description": "Backend for Artsy Web Application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.x"
+  },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",

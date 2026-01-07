@@ -1,6 +1,6 @@
 // import jwt from "jsonwebtoken";
 const jwt = require("jsonwebtoken")
-JWT_SECRET = "A256ygh#1223luos";
+JWT_SECRET = process.env.JWT_SECRET || "A256ygh#1223luos";
 const User = require("./database/account.js")
 
 
