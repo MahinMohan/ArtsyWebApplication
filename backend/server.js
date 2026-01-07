@@ -438,6 +438,12 @@ app.get("*", (req, res) => {
 });
 
 
-app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
-});
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(port, () => {
+        console.log(`Server listening on port ${port}`);
+    });
+}
+
+// Export for Vercel serverless functions
+module.exports = app;
