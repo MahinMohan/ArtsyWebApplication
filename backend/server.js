@@ -5,7 +5,7 @@ const port = process.env.PORT || 3000;
 const mongoose = require("mongoose");
 require("./database/database.js")
 const User = require("./database/account.js")
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const crypto = require('crypto');
 JWT_SECRET = process.env.JWT_SECRET || "A256ygh#1223luos";
