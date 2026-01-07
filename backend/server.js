@@ -431,10 +431,20 @@ app.delete("/api/deletefavourites", authenticateusertoken, async(req,res)=>{
     
 })
 
-app.use(express.static(path.join(__dirname, "dist"))); // <-- Serve static frontend
+// Serve static files from dist (local) or public (Vercel)
+app.use(express.static(path.join(__dirname, "dist")));
+app.use(express.static(path.join(__dirname, "..", "public")));
 
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "dist", "index.html")); // <-- For React Router
+    // Try dist first (local), then public (Vercel)
+    const distPath = path.join(__dirname, "dist", "index.html");
+    const publicPath = path.join(__dirname, "..", "public", "index.html");
+    
+    if (require('fs').existsSync(distPath)) {
+        res.sendFile(distPath);
+    } else {
+        res.sendFile(publicPath);
+    }
 });
 
 
