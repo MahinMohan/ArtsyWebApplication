@@ -1,6 +1,9 @@
 // import jwt from "jsonwebtoken";
 const jwt = require("jsonwebtoken")
-JWT_SECRET = process.env.JWT_SECRET || "A256ygh#1223luos";
+JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+    throw new Error("JWT_SECRET environment variable is not set");
+}
 const User = require("./database/account.js")
 
 

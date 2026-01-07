@@ -8,7 +8,10 @@ const User = require("./database/account.js")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const crypto = require('crypto');
-JWT_SECRET = process.env.JWT_SECRET || "A256ygh#1223luos";
+JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+    throw new Error("JWT_SECRET environment variable is not set");
+}
 const {authenticateusertoken} = require("./middleware.js")
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
@@ -29,8 +32,12 @@ app.use(cors({
 async function get_token()
 {
     try {
-        const client_id = process.env.ARTSY_CLIENT_ID || "0a77160e9a2a4a299043"; 
-        const client_secret = process.env.ARTSY_CLIENT_SECRET || "b4e8e053b9ffe81da44ba61a31003d4c";
+        const client_id = process.env.ARTSY_CLIENT_ID; 
+        const client_secret = process.env.ARTSY_CLIENT_SECRET;
+        
+        if (!client_id || !client_secret) {
+            throw new Error("Artsy API credentials not set in environment variables");
+        }
         const url = `https://api.artsy.net/api/tokens/xapp_token?client_id=${client_id}&client_secret=${client_secret}`;
 
         const response = await fetch(url, {
